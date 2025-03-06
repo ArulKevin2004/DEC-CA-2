@@ -11,8 +11,8 @@ function App() {
   const [query, setQuery] = useState("")
   const [inputQuery,setInputQuery] = useState("")
 
-  const { data,isLoading,error } = useQuery({
-    queryKey: ['recipies'],
+  const { data,isLoading,error,refetch } = useQuery({
+    queryKey: ['recipies',query],
     queryFn: () => getquery(query),
     enabled: !!query
   })
@@ -21,15 +21,21 @@ function App() {
     alert("Somethings wrong!Try again")
   }
 
+  const handlechange = () => {
+    setQuery(inputQuery)
+    refetch();
+  }
+
   return (
     <>
-      <input type="text" value={query} onChange={(e) => }/>
+      <input type="text" value={query} onChange={(e) => {setInputQuery(e.target.value)}}/>
+      <button onClick={handlechange}>Search</button>
       {JSON.stringify(data)}
     </>
   )
 }
 
-const getquery = async() => {
+const getquery = async(query) => {
   var myHeaders = new Headers();
   myHeaders.append("apikey", "ReNRG0iB6wtyruLpPQehh4pccSDoHuxR");
 
